@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-
+import * as uuidv4 from 'uuid/v4';
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export class BasicHeaderInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const modifiedRequest = req.clone({
       headers: req.headers
-        .append('flix-client-id', 'Flix-Client_Id')
+        .append('Flix-Client-Id', uuidv4())
         .append('X-Date', new Date().toUTCString())
+        .append('Content-Type', 'application/json')
     });
 
-    console.log('%c header', 'background:#271cbb; color: #dc52fa', modifiedRequest.headers)
     return next.handle(modifiedRequest);
   }
-
-
 }

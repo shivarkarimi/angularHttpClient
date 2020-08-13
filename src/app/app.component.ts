@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfigService } from './config.service';
-import { tap, map } from 'rxjs/operators';
+import { AuthenticationService } from './authentication.service';
+import { OAuth } from 'src/models/oauth';
+import { tap } from 'rxjs/operators';
+import { OauthService } from './oauth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,15 +11,12 @@ import { tap, map } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   title = 'httpclient-sample';
-  appName: string;
+  oAuth: OAuth;
 
-  constructor(private configService: ConfigService) { }
+  constructor(private oathService: OauthService) { }
 
   ngOnInit(): void {
-    this.configService.get()
-      .pipe(
-        map(info => info.name)
-      )
-      .subscribe(x => this.appName = x);
+    this.oathService.getOAuth()
+      .subscribe(x => this.oAuth = x);
   }
 }

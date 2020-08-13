@@ -29,7 +29,28 @@
 
 <div class="content" role="main">
 
-  <h1>{{appName}}</h1>
+  <h1>OAuth Info:</h1>
+  <table *ngIf="oAuth">
+    <tr>
+      <td>Domain:</td>
+      <td>{{oAuth.domain}}</td>
+    </tr>
+    <tr>
+      <td>Enabled:</td>
+      <td>{{oAuth.enabled}}</td>
+    </tr>
+    <tr>
+      <td>Providers:</td>
+      <td>{{oAuth.providers[0]}}</td>
+    </tr>
+  </table>
 
+  <nav>
+    <ul>
+      <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+    </ul>
+  </nav>
+
+
+  <router-outlet></router-outlet>
 </div>
-<router-outlet></router-outlet>

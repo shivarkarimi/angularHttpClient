@@ -1,0 +1,8 @@
+<p>shows works!</p>
+
+<div class="card" *ngFor="let show of shows | async">
+  <div class="card-body">
+    <h2>{{show.string}}</h2>
+    <h3>{{show.description}}</h3>
+  </div>
+</div>

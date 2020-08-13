@@ -6,7 +6,7 @@ export interface FlixRequestOptions {
   observe?: 'body';
   params?: HttpParams;
   reportProgress?: boolean;
-  responseType?: 'json';
+  responseType?: string;
   withCredentials?: boolean;
   body?: any;
   //custom

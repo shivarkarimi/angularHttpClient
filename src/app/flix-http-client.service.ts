@@ -2,12 +2,10 @@ import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FlixRequestOptions } from 'src/view-models/flix-request-options';
 import { Observable } from 'rxjs';
-import { AuthType } from 'src/models/auth-type';
-import { FnSignerService } from './fn-signer.service';
-import { CredentialProviderService } from './credentials-provider.service';
+import { AuthHeaderProviderService } from './auth-header-provider.service';
 
-export function flixHttpClientCreator(httpHandler: HttpHandler, authService: CredentialProviderService, fnSignerService: FnSignerService) {
-  return new FlixHttpClient(httpHandler, authService, fnSignerService);
+export function flixHttpClientCreator(httpHandler: HttpHandler, authHeaderProviderService: AuthHeaderProviderService) {
+  return new FlixHttpClient(httpHandler, authHeaderProviderService);
 }
 
 @Injectable()
@@ -15,7 +13,7 @@ export class FlixHttpClient extends HttpClient {
 
   private api = 'http://127.0.0.1:8080/';
 
-  constructor(httpHandler: HttpHandler, private authService: CredentialProviderService, private FnSignerService: FnSignerService) {
+  constructor(httpHandler: HttpHandler, private authHeaderProviderService: AuthHeaderProviderService) {
     super(httpHandler);
   }
 
@@ -26,8 +24,8 @@ export class FlixHttpClient extends HttpClient {
    * @returns {Observable<T>}
    */
   public Get<T>(endPoint: string, options?: FlixRequestOptions): Observable<T> {
-    this.addAuthHeader(options);
-    return this.get<T>(this.api + endPoint, options);
+    const updatedOptions = this.authHeaderProviderService.setAuthHeader(endPoint, options, 'Get');
+    return this.get<T>(this.api + endPoint, updatedOptions);
   }
 
   /**
@@ -38,7 +36,8 @@ export class FlixHttpClient extends HttpClient {
    * @returns {Observable<T>}
    */
   public Post<T>(endPoint: string, params: Object, options?: FlixRequestOptions): Observable<T> {
-    return this.post<T>(this.api + endPoint, params, options);
+    const updatedOptions = this.authHeaderProviderService.setAuthHeader(endPoint, options, 'Post');
+    return this.post<T>(this.api + endPoint, params, updatedOptions);
   }
 
   /**
@@ -60,30 +59,6 @@ export class FlixHttpClient extends HttpClient {
    */
   public Delete<T>(endPoint: string, options?: FlixRequestOptions): Observable<T> {
     return this.delete<T>(this.api + endPoint, options);
-  }
-
-  private addAuthHeader(options: FlixRequestOptions) {
-    switch (options.authType) {
-      case AuthType.basic:
-        this.addBasicAuthHeaders(options);
-        break;
-      case AuthType.signed:
-        this.AddSignedAuthHeaders(options)
-    }
-  }
-
-  private AddSignedAuthHeaders(options: FlixRequestOptions) {
-    // this.FnSignerService.sign()
-  }
-
-  private addBasicAuthHeaders(options: FlixRequestOptions) {
-    const basic = this.authService.getBasicAuthCredentials();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Basic ' + basic
-    })
-
-    options.headers = headers;
   }
 
 }
