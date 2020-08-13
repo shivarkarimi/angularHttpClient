@@ -1,4 +1,4 @@
-import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FlixRequestOptions } from 'src/view-models/flix-request-options';
 import { Observable } from 'rxjs';

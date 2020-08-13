@@ -8,7 +8,7 @@ import { AuthType } from 'src/models/auth-type';
 })
 export class HttpOptionsFactoryService {
 
-  public get(authType: AuthType = AuthType.signed, responseType: string = "json", body: string = ""): FlixRequestOptions {
+  public get(authType: AuthType = AuthType.signed, responseType: any = "json", body: string = ""): FlixRequestOptions {
 
     const options: FlixRequestOptions = {
       authType: authType,

@@ -8,7 +8,7 @@ export interface Show {
   episodic: boolean;
   season: string;
   owner: User;
-  trackingCode: string;
+  trackingCode: string; // dev task to fix them
   hidden: boolean;
   aspect_ratio: string;
   created_date: Date;
