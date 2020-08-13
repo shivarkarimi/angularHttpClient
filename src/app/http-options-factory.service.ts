@@ -14,7 +14,8 @@ export class HttpOptionsFactoryService {
       authType: authType,
       headers: new HttpHeaders(),
       responseType: responseType,
-      body: body
+      body: body,
+      observe: 'body'
     }
 
     return options;
